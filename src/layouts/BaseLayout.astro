@@ -1,0 +1,41 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Your Preferred Life",
+  description = "Digital products and ideas for building your preferred life.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="border-b border-slate-200 bg-white/80 backdrop-blur">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="/" class="text-lg font-semibold tracking-tight">Your Preferred Life</a>
+        <div class="flex items-center gap-5 text-sm font-medium text-slate-700">
+          <a class="hover:text-brand" href="/blog">Blog</a>
+          <a class="hover:text-brand" href="/#products">Products</a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="border-t border-slate-200 px-6 py-8 text-center text-sm text-slate-500">
+      <p>&copy; {new Date().getFullYear()} Your Preferred Life. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

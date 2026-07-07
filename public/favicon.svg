@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Your Preferred Life">
+  <rect width="64" height="64" rx="14" fill="#2563eb"/>
+  <path d="M18 20h8l6 12 6-12h8L35.8 39.2V50h-7.6V39.2L18 20Z" fill="#fff"/>
+</svg>
