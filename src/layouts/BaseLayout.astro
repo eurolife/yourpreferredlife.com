@@ -10,6 +10,16 @@ const {
   title = "Your Preferred Life",
   description = "Digital products and ideas for building your preferred life.",
 } = Astro.props;
+
+const navItems = [
+  ["Home", "/"],
+  ["Shop", "/#books"],
+  ["Audio", "/#audio"],
+  ["Books", "/#books"],
+  ["Blog", "/blog"],
+  ["About", "/#about"],
+  ["Contact", "/#contact"],
+];
 ---
 
 <!doctype html>
@@ -22,20 +32,81 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <header class="border-b border-slate-200 bg-white/80 backdrop-blur">
-      <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="/" class="text-lg font-semibold tracking-tight">Your Preferred Life</a>
-        <div class="flex items-center gap-5 text-sm font-medium text-slate-700">
-          <a class="hover:text-brand" href="/blog">Blog</a>
-          <a class="hover:text-brand" href="/#products">Products</a>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/" class="brand-mark" aria-label="Your Preferred Life home">
+          <span class="brand-word-small">Your</span>
+          <span class="brand-sun" aria-hidden="true"></span>
+          <span class="brand-script">Preferred</span>
+          <span class="brand-word-small brand-life">Life</span>
+        </a>
+
+        <div class="nav-links">
+          {navItems.map(([label, href]) => (
+            <a class={label === "Home" ? "is-active" : ""} href={href}>
+              {label}
+              {label === "Shop" && <span class="nav-caret" aria-hidden="true">⌄</span>}
+            </a>
+          ))}
+        </div>
+
+        <div class="nav-actions" aria-label="Shop actions">
+          <a href="/#search" aria-label="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
+            </svg>
+          </a>
+          <a class="cart-action" href="/#cart" aria-label="Cart">
+            <span>0</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6.5 8.5h11l-.8 11H7.3l-.8-11Zm2.5 0a3 3 0 0 1 6 0" />
+            </svg>
+          </a>
         </div>
       </nav>
     </header>
     <main>
       <slot />
     </main>
-    <footer class="border-t border-slate-200 px-6 py-8 text-center text-sm text-slate-500">
-      <p>&copy; {new Date().getFullYear()} Your Preferred Life. All rights reserved.</p>
+    <footer class="site-footer" id="contact">
+      <section class="newsletter" aria-labelledby="newsletter-title">
+        <div class="newsletter-mark" aria-hidden="true"></div>
+        <h2 id="newsletter-title">Inspiration, tools and new releases straight to your inbox.</h2>
+        <form class="newsletter-form">
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" type="email" placeholder="Your email address" />
+          <button type="submit">Join the List</button>
+        </form>
+      </section>
+
+      <div class="footer-grid">
+        <a href="/" class="brand-mark footer-brand" aria-label="Your Preferred Life home">
+          <span class="brand-word-small">Your</span>
+          <span class="brand-sun" aria-hidden="true"></span>
+          <span class="brand-script">Preferred</span>
+          <span class="brand-word-small brand-life">Life</span>
+        </a>
+        <p>Digital resources to help you reprogram your mind, raise your vibration and create a life you truly love.</p>
+        <div>
+          <h3>Quick Links</h3>
+          <a href="/#about">About</a>
+          <a href="/#contact">Contact</a>
+          <a href="/#faqs">FAQs</a>
+          <a href="/#terms">Terms & Conditions</a>
+          <a href="/#privacy">Privacy Policy</a>
+        </div>
+        <div>
+          <h3>Connect</h3>
+          <div class="social-links">
+            <a href="/#instagram" aria-label="Instagram">IG</a>
+            <a href="/#facebook" aria-label="Facebook">F</a>
+            <a href="/#pinterest" aria-label="Pinterest">P</a>
+            <a href="/#youtube" aria-label="YouTube">YT</a>
+          </div>
+        </div>
+      </div>
+
+      <p class="copyright">&copy; {new Date().getFullYear()} Your Preferred Life. All rights reserved.</p>
     </footer>
   </body>
 </html>

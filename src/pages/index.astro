@@ -1,59 +1,194 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pillars = [
+  {
+    title: "Mindset",
+    text: "Reprogram your mind and beliefs",
+    icon: "mind",
+  },
+  {
+    title: "Healing",
+    text: "Release, restore and recharge",
+    icon: "lotus",
+  },
+  {
+    title: "Manifestation",
+    text: "Align with your desires and create",
+    icon: "sun",
+  },
+  {
+    title: "Well-Being",
+    text: "Sleep, relax and find inner peace",
+    icon: "moon",
+  },
+];
+
+const audioProducts = [
+  {
+    title: "Morning Mindset Reprogramming",
+    type: "Audio Session",
+    price: "£9.99",
+    image: "/images/home/audio-morning.png",
+  },
+  {
+    title: "Deep Sleep Recalibration",
+    type: "Audio Session",
+    price: "£9.99",
+    image: "/images/home/audio-sleep.png",
+  },
+  {
+    title: "I Am Worthy Affirmations",
+    type: "Audio Session",
+    price: "£8.99",
+    image: "/images/home/audio-worthy.png",
+  },
+  {
+    title: "Release & Let Go Meditation",
+    type: "Audio Session",
+    price: "£9.99",
+    image: "/images/home/audio-release.png",
+  },
+];
+
+const bookProducts = [
+  {
+    title: "The Reality Shift",
+    type: "PDF Book",
+    price: "£12.99",
+    image: "/images/home/book-reality.png",
+  },
+  {
+    title: "Journal Your Way to Clarity",
+    type: "PDF Book",
+    price: "£8.99",
+    image: "/images/home/book-clarity.png",
+  },
+  {
+    title: "Manifest with Intention",
+    type: "PDF Book",
+    price: "£11.99",
+    image: "/images/home/book-manifest.png",
+  },
+  {
+    title: "Daily Alignment Journal",
+    type: "PDF Book",
+    price: "£8.99",
+    image: "/images/home/book-alignment.png",
+  },
+];
 ---
 
-<BaseLayout>
-  <section class="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-[1.15fr_0.85fr] md:items-center">
-    <div>
-      <p class="text-sm font-semibold uppercase tracking-wide text-brand">Digital tools for intentional living</p>
-      <h1 class="mt-4 text-5xl font-bold tracking-tight text-slate-950 md:text-6xl">
-        Build your preferred life with clearer choices.
+<BaseLayout
+  title="Your Preferred Life | Mindset Audio, Books and Guided Tools"
+  description="Transform your mindset, elevate your energy and create the life you truly desire with audio sessions, books and practical digital resources."
+>
+  <section class="hero">
+    <div class="hero-copy">
+      <h1>
+        You have the power to choose a different life.
+        <span>Let's create it.</span>
       </h1>
-      <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-        A home for practical digital products, thoughtful resources, and essays about designing a life that fits.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="#products" class="rounded-md bg-brand px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700">
-          View Products
+      <p>Transform your mindset, elevate your energy and create the life you truly desire.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#audio">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 10v4m4-7v10m4-13v16m4-11v6m4-8v10" />
+          </svg>
+          Browse Audio
         </a>
-        <a href="/blog" class="rounded-md border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 hover:border-slate-400">
-          Read the Blog
+        <a class="btn btn-secondary" href="#books">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H19v17H8.5A3.5 3.5 0 0 0 5 22V5.5Zm0 0A3.5 3.5 0 0 1 8.5 2" />
+          </svg>
+          Explore Books
         </a>
       </div>
     </div>
-    <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-      <p class="text-sm font-semibold text-slate-500">Project status</p>
-      <ul class="mt-5 space-y-4 text-sm text-slate-700">
-        <li class="flex gap-3"><span class="font-semibold text-brand">01</span> Astro is ready for fast pages and server routes.</li>
-        <li class="flex gap-3"><span class="font-semibold text-brand">02</span> Tailwind CSS is connected for styling.</li>
-        <li class="flex gap-3"><span class="font-semibold text-brand">03</span> Markdown blog posts live in content collections.</li>
-        <li class="flex gap-3"><span class="font-semibold text-brand">04</span> Lemon Squeezy checkout helpers are scaffolded.</li>
-      </ul>
+    <div class="hero-image" aria-label="Woman standing at a sunlit coastline"></div>
+  </section>
+
+  <section class="pillars" aria-label="Resource categories">
+    {pillars.map((pillar) => (
+      <article>
+        <span class={`pillar-icon pillar-${pillar.icon}`} aria-hidden="true"></span>
+        <h2>{pillar.title}</h2>
+        <p>{pillar.text}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="showcase" id="audio">
+    <div class="section-intro">
+      <p class="eyebrow">Featured Audio</p>
+      <h2>Powerful audio to shift your mind and change your life.</h2>
+      <a class="btn btn-dark" href="/#audio-library">View All Audio</a>
+    </div>
+    <div class="product-grid">
+      {audioProducts.map((product) => (
+        <article class="product-card audio-card">
+          <div class="product-media">
+            <img src={product.image} alt={`${product.title} cover image`} loading="lazy" />
+            <button type="button" aria-label={`Play preview of ${product.title}`} class="play-button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 7 8 5-8 5V7Z" />
+              </svg>
+            </button>
+          </div>
+          <div class="product-body">
+            <h3>{product.title}</h3>
+            <p>{product.type}</p>
+            <div class="product-foot">
+              <strong>{product.price}</strong>
+              <button type="button" aria-label={`Add ${product.title} to cart`}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.5 8.5h11l-.8 11H7.3l-.8-11Zm2.5 0a3 3 0 0 1 6 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      ))}
     </div>
   </section>
 
-  <section id="products" class="bg-white px-6 py-16">
-    <div class="mx-auto max-w-6xl">
-      <div class="max-w-2xl">
-        <h2 class="text-3xl font-bold tracking-tight text-slate-950">Products</h2>
-        <p class="mt-3 text-slate-600">
-          Add your Lemon Squeezy variant IDs to product cards and send customers into a secure checkout.
-        </p>
-      </div>
-      <div class="mt-8 grid gap-5 md:grid-cols-3">
-        {["Starter Guide", "Template Pack", "Premium Toolkit"].map((name) => (
-          <article class="rounded-lg border border-slate-200 p-5">
-            <h3 class="text-lg font-semibold text-slate-950">{name}</h3>
-            <p class="mt-2 text-sm leading-6 text-slate-600">Replace this with a real digital product description.</p>
-            <button
-              class="mt-5 w-full rounded-md bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
-              data-variant-id=""
-            >
-              Buy Now
-            </button>
-          </article>
-        ))}
-      </div>
+  <section class="showcase" id="books">
+    <div class="section-intro">
+      <p class="eyebrow">Featured Books</p>
+      <h2>Beautiful books to inspire, guide and support your journey.</h2>
+      <a class="btn btn-dark" href="/#book-library">View All Books</a>
+    </div>
+    <div class="product-grid">
+      {bookProducts.map((product) => (
+        <article class="product-card book-card">
+          <div class="product-media">
+            <img src={product.image} alt={`${product.title} cover`} loading="lazy" />
+          </div>
+          <div class="product-body">
+            <h3>{product.title}</h3>
+            <p>{product.type}</p>
+            <div class="product-foot">
+              <strong>{product.price}</strong>
+              <button type="button" aria-label={`Add ${product.title} to cart`}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.5 8.5h11l-.8 11H7.3l-.8-11Zm2.5 0a3 3 0 0 1 6 0" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="testimonial" id="about">
+    <div>
+      <span aria-hidden="true">“</span>
+      <blockquote>
+        These audio sessions have truly transformed my mindset and my life. I feel more calm, confident and aligned every day.
+      </blockquote>
+      <p>– Sarah J.</p>
+      <p class="stars" aria-label="Five star rating">★★★★★</p>
     </div>
   </section>
 </BaseLayout>
