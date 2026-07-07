@@ -12,7 +12,8 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync:products": "node scripts/sync-lemon-products.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^9.0.0",

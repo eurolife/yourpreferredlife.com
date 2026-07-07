@@ -10,6 +10,10 @@ type JsonApiResponse<TType extends string, TAttributes> = {
   data: JsonApiResource<TType, TAttributes>;
 };
 
+type JsonApiListResponse<TType extends string, TAttributes> = {
+  data: JsonApiResource<TType, TAttributes>[];
+};
+
 type CheckoutAttributes = {
   url: string;
   store_id: number;
@@ -21,6 +25,28 @@ type CheckoutAttributes = {
 type CheckoutOptions = Record<string, unknown>;
 type CheckoutData = Record<string, unknown>;
 type ProductOptions = Record<string, unknown>;
+
+export type LemonSqueezyProductAttributes = {
+  store_id: number;
+  name: string;
+  slug: string;
+  description: string;
+  status: "draft" | "published";
+  price: number;
+  price_formatted: string;
+  buy_now_url: string;
+  test_mode: boolean;
+};
+
+export type LemonSqueezyVariantAttributes = {
+  product_id: number;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  status: "pending" | "draft" | "published";
+  test_mode: boolean;
+};
 
 export type CreateCheckoutInput = {
   variantId: string;
@@ -110,10 +136,19 @@ export function createCheckout(input: CreateCheckoutInput) {
   });
 }
 
-export function listProducts() {
-  return lemonSqueezyRequest("/products");
+export function listProducts(storeId?: string) {
+  const resolvedStoreId = storeId ?? import.meta.env.LEMON_SQUEEZY_STORE_ID;
+  const query = resolvedStoreId ? `?filter[store_id]=${encodeURIComponent(resolvedStoreId)}` : "";
+
+  return lemonSqueezyRequest<JsonApiListResponse<"products", LemonSqueezyProductAttributes>>(
+    `/products${query}`,
+  );
 }
 
-export function listVariants() {
-  return lemonSqueezyRequest("/variants");
+export function listVariants(productId?: string) {
+  const query = productId ? `?filter[product_id]=${encodeURIComponent(productId)}` : "";
+
+  return lemonSqueezyRequest<JsonApiListResponse<"variants", LemonSqueezyVariantAttributes>>(
+    `/variants${query}`,
+  );
 }

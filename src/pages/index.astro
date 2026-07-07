@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { formatPrice, getFeaturedProductsByCategory } from "../lib/products";
 
 const pillars = [
   {
@@ -24,59 +25,8 @@ const pillars = [
   },
 ];
 
-const audioProducts = [
-  {
-    title: "Morning Mindset Reprogramming",
-    type: "Audio Session",
-    price: "£9.99",
-    image: "/images/home/audio-morning.png",
-  },
-  {
-    title: "Deep Sleep Recalibration",
-    type: "Audio Session",
-    price: "£9.99",
-    image: "/images/home/audio-sleep.png",
-  },
-  {
-    title: "I Am Worthy Affirmations",
-    type: "Audio Session",
-    price: "£8.99",
-    image: "/images/home/audio-worthy.png",
-  },
-  {
-    title: "Release & Let Go Meditation",
-    type: "Audio Session",
-    price: "£9.99",
-    image: "/images/home/audio-release.png",
-  },
-];
-
-const bookProducts = [
-  {
-    title: "The Reality Shift",
-    type: "PDF Book",
-    price: "£12.99",
-    image: "/images/home/book-reality.png",
-  },
-  {
-    title: "Journal Your Way to Clarity",
-    type: "PDF Book",
-    price: "£8.99",
-    image: "/images/home/book-clarity.png",
-  },
-  {
-    title: "Manifest with Intention",
-    type: "PDF Book",
-    price: "£11.99",
-    image: "/images/home/book-manifest.png",
-  },
-  {
-    title: "Daily Alignment Journal",
-    type: "PDF Book",
-    price: "£8.99",
-    image: "/images/home/book-alignment.png",
-  },
-];
+const audioProducts = getFeaturedProductsByCategory("audio");
+const bookProducts = getFeaturedProductsByCategory("book");
 ---
 
 <BaseLayout
@@ -139,8 +89,13 @@ const bookProducts = [
             <h3>{product.title}</h3>
             <p>{product.type}</p>
             <div class="product-foot">
-              <strong>{product.price}</strong>
-              <button type="button" aria-label={`Add ${product.title} to cart`}>
+              <strong>{formatPrice(product)}</strong>
+              <button
+                type="button"
+                class="checkout-button"
+                data-product-slug={product.slug}
+                aria-label={`Buy ${product.title}`}
+              >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M6.5 8.5h11l-.8 11H7.3l-.8-11Zm2.5 0a3 3 0 0 1 6 0" />
                 </svg>
@@ -168,8 +123,13 @@ const bookProducts = [
             <h3>{product.title}</h3>
             <p>{product.type}</p>
             <div class="product-foot">
-              <strong>{product.price}</strong>
-              <button type="button" aria-label={`Add ${product.title} to cart`}>
+              <strong>{formatPrice(product)}</strong>
+              <button
+                type="button"
+                class="checkout-button"
+                data-product-slug={product.slug}
+                aria-label={`Buy ${product.title}`}
+              >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M6.5 8.5h11l-.8 11H7.3l-.8-11Zm2.5 0a3 3 0 0 1 6 0" />
                 </svg>
@@ -191,4 +151,48 @@ const bookProducts = [
       <p class="stars" aria-label="Five star rating">★★★★★</p>
     </div>
   </section>
+
+  <script>
+    const checkoutButtons = document.querySelectorAll(".checkout-button");
+
+    checkoutButtons.forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      button.addEventListener("click", async () => {
+        const productSlug = button.dataset.productSlug;
+
+        if (!productSlug || button.dataset.loading === "true") {
+          return;
+        }
+
+        button.dataset.loading = "true";
+        button.setAttribute("aria-busy", "true");
+
+        try {
+          const response = await fetch("/api/create-checkout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ productSlug }),
+          });
+          const result = await response.json();
+
+          if (!response.ok || !result.checkoutUrl) {
+            throw new Error(result.error ?? "Unable to create checkout.");
+          }
+
+          window.location.href = result.checkoutUrl;
+        } catch (error) {
+          const message = error instanceof Error ? error.message : "Unable to create checkout.";
+          window.alert(message);
+        } finally {
+          button.dataset.loading = "false";
+          button.removeAttribute("aria-busy");
+        }
+      });
+    });
+  </script>
 </BaseLayout>
