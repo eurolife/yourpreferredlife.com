@@ -6,13 +6,15 @@ export const lemonCatalogProducts = [
   {
     slug: "manifest-wealth-and-success-5088fda5-c0ab-4aba-bb59-7d721c148245",
     title: "Manifest Wealth and Success",
-    description: "",
-    priceCents: 999,
+    description: "<p>Have you ever wondered how and if you could manifest wealth yourself? This is a groundbreaking method that few people know about, and it works! </p>",
+    priceCents: 499,
     currency: "GBP",
     lemonSqueezy: {
       productId: "1202798",
       variantId: "1880232",
       buyNowUrl: "https://yourpreferredlife.lemonsqueezy.com/checkout/buy/5088fda5-c0ab-4aba-bb59-7d721c148245",
+      thumbUrl: "https://cdn.lemonsqueezy.com/media/426352/376b2da0-9574-465b-98b6-75136e4abc1b.png?fit=contain&format=auto&height=100&ixlib=php-3.3.1&width=100",
+      largeThumbUrl: "https://cdn.lemonsqueezy.com/media/426352/376b2da0-9574-465b-98b6-75136e4abc1b.png?fit=contain&format=auto&height=1000&ixlib=php-3.3.1&width=1000",
       productStatus: "published",
       variantStatus: "pending",
       testMode: true

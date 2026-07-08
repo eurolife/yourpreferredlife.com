@@ -136,6 +136,8 @@ function makeCatalogProduct(product, variant, usedSlugs) {
       productId: product.id,
       variantId: variant?.id ?? "",
       buyNowUrl: product.attributes.buy_now_url || undefined,
+      thumbUrl: product.attributes.thumb_url || undefined,
+      largeThumbUrl: product.attributes.large_thumb_url || undefined,
       productStatus: product.attributes.status,
       variantStatus: variant?.attributes?.status,
       testMode: Boolean(product.attributes.test_mode || variant?.attributes?.test_mode),

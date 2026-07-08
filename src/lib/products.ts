@@ -13,6 +13,8 @@ export type LemonCatalogProduct = {
     productId: string;
     variantId: string;
     buyNowUrl?: string;
+    thumbUrl?: string;
+    largeThumbUrl?: string;
     productStatus?: string;
     variantStatus?: string;
     testMode?: boolean;
@@ -57,7 +59,7 @@ function toProduct(product: LemonCatalogProduct, index: number): Product {
     ...product,
     category,
     type: override.type ?? (category === "audio" ? "Audio Session" : "PDF Book"),
-    image: override.image ?? defaultProductImages[category],
+    image: override.image ?? product.lemonSqueezy.largeThumbUrl ?? product.lemonSqueezy.thumbUrl ?? defaultProductImages[category],
     featured: override.featured ?? true,
     sortOrder: override.sortOrder ?? (index + 1) * 10,
     shortTitle: override.shortTitle,

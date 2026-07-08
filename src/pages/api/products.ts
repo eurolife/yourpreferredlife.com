@@ -1,5 +1,5 @@
-import type { APIRoute } from "astro";
-import { formatPrice, products } from "../../lib/products";
+import type { APIRoute } from 'astro';
+import { formatPrice, products } from '../../lib/products';
 
 export const GET: APIRoute = async () => {
   return Response.json({
@@ -14,6 +14,8 @@ export const GET: APIRoute = async () => {
       image: product.image,
       featured: product.featured,
       sortOrder: product.sortOrder,
+      lemonSqueezyThumbUrl: product.lemonSqueezy.thumbUrl,
+      lemonSqueezyLargeThumbUrl: product.lemonSqueezy.largeThumbUrl,
       configuredForCheckout: Boolean(product.lemonSqueezy.variantId),
     })),
   });

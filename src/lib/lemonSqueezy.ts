@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://api.lemonsqueezy.com/v1";
+const API_BASE_URL = 'https://api.lemonsqueezy.com/v1';
 
 type JsonApiResource<TType extends string, TAttributes> = {
   type: TType;
@@ -31,11 +31,13 @@ export type LemonSqueezyProductAttributes = {
   name: string;
   slug: string;
   description: string;
-  status: "draft" | "published";
+  status: 'draft' | 'published';
   price: number;
   price_formatted: string;
   buy_now_url: string;
   test_mode: boolean;
+  thumb_url: string;
+  large_thumb_url: string;
 };
 
 export type LemonSqueezyVariantAttributes = {
@@ -44,7 +46,7 @@ export type LemonSqueezyVariantAttributes = {
   slug: string;
   description: string;
   price: number;
-  status: "pending" | "draft" | "published";
+  status: 'pending' | 'draft' | 'published';
   test_mode: boolean;
 };
 
@@ -63,7 +65,7 @@ function getApiKey() {
   const apiKey = import.meta.env.LEMON_SQUEEZY_API_KEY;
 
   if (!apiKey) {
-    throw new Error("Missing LEMON_SQUEEZY_API_KEY.");
+    throw new Error('Missing LEMON_SQUEEZY_API_KEY.');
   }
 
   return apiKey;
@@ -73,18 +75,21 @@ function getStoreId(storeId?: string) {
   const resolvedStoreId = storeId ?? import.meta.env.LEMON_SQUEEZY_STORE_ID;
 
   if (!resolvedStoreId) {
-    throw new Error("Missing LEMON_SQUEEZY_STORE_ID.");
+    throw new Error('Missing LEMON_SQUEEZY_STORE_ID.');
   }
 
   return resolvedStoreId;
 }
 
-export async function lemonSqueezyRequest<T>(path: string, init: RequestInit = {}) {
+export async function lemonSqueezyRequest<T>(
+  path: string,
+  init: RequestInit = {},
+) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
     headers: {
-      Accept: "application/vnd.api+json",
-      "Content-Type": "application/vnd.api+json",
+      Accept: 'application/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
       Authorization: `Bearer ${getApiKey()}`,
       ...init.headers,
     },
@@ -101,54 +106,61 @@ export async function lemonSqueezyRequest<T>(path: string, init: RequestInit = {
 export function createCheckout(input: CreateCheckoutInput) {
   const storeId = getStoreId(input.storeId);
 
-  return lemonSqueezyRequest<JsonApiResponse<"checkouts", CheckoutAttributes>>("/checkouts", {
-    method: "POST",
-    body: JSON.stringify({
-      data: {
-        type: "checkouts",
-        attributes: {
-          custom_price: input.customPrice,
-          product_options: {
-            enabled_variants: [Number(input.variantId)],
-            ...input.productOptions,
+  return lemonSqueezyRequest<JsonApiResponse<'checkouts', CheckoutAttributes>>(
+    '/checkouts',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        data: {
+          type: 'checkouts',
+          attributes: {
+            custom_price: input.customPrice,
+            product_options: {
+              enabled_variants: [Number(input.variantId)],
+              ...input.productOptions,
+            },
+            checkout_options: input.checkoutOptions,
+            checkout_data: input.checkoutData,
+            expires_at: input.expiresAt,
+            test_mode: input.testMode,
           },
-          checkout_options: input.checkoutOptions,
-          checkout_data: input.checkoutData,
-          expires_at: input.expiresAt,
-          test_mode: input.testMode,
-        },
-        relationships: {
-          store: {
-            data: {
-              type: "stores",
-              id: storeId,
+          relationships: {
+            store: {
+              data: {
+                type: 'stores',
+                id: storeId,
+              },
+            },
+            variant: {
+              data: {
+                type: 'variants',
+                id: input.variantId,
+              },
             },
           },
-          variant: {
-            data: {
-              type: "variants",
-              id: input.variantId,
-            },
-          },
         },
-      },
-    }),
-  });
+      }),
+    },
+  );
 }
 
 export function listProducts(storeId?: string) {
   const resolvedStoreId = storeId ?? import.meta.env.LEMON_SQUEEZY_STORE_ID;
-  const query = resolvedStoreId ? `?filter[store_id]=${encodeURIComponent(resolvedStoreId)}` : "";
+  const query = resolvedStoreId
+    ? `?filter[store_id]=${encodeURIComponent(resolvedStoreId)}`
+    : '';
 
-  return lemonSqueezyRequest<JsonApiListResponse<"products", LemonSqueezyProductAttributes>>(
-    `/products${query}`,
-  );
+  return lemonSqueezyRequest<
+    JsonApiListResponse<'products', LemonSqueezyProductAttributes>
+  >(`/products${query}`);
 }
 
 export function listVariants(productId?: string) {
-  const query = productId ? `?filter[product_id]=${encodeURIComponent(productId)}` : "";
+  const query = productId
+    ? `?filter[product_id]=${encodeURIComponent(productId)}`
+    : '';
 
-  return lemonSqueezyRequest<JsonApiListResponse<"variants", LemonSqueezyVariantAttributes>>(
-    `/variants${query}`,
-  );
+  return lemonSqueezyRequest<
+    JsonApiListResponse<'variants', LemonSqueezyVariantAttributes>
+  >(`/variants${query}`);
 }
